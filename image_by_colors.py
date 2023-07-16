@@ -52,29 +52,45 @@ def get_frequency(image_path):
   print(len(color_list))
   for item in res:
     #TODO: add color names here too, make it prettier
-    print(f'{round(float(res[item]) / float(len(color_list)), 3)*100}%')
+    print(f'{item} : {round(float(res[item]) / float(len(color_list)), 3)*100}%')
   return freq
 
 def show_chart(frequency):
   
-  #TODO: make this look better (better colors)
-  #      add the percentages(?)
-  #      add something that prints where this saved (user_files?)
+  new_color_dict = {
+    "Blue" : "C0",
+    "Red" : "C3",
+    "Yellow" : "#f0d84f",
+    "Green" : "C2",
+    "Orange" : "C1",
+    "Brown" : "C5",
+    "Purple" : "C4",
+    "Pink" : "C6",
+    "Grey" : "C7"
+  }
+
+  #TODO: add something that prints where this saved (user_files?)
 
   fig, ax = plt.subplots()
 
-  piechart, text = plt.pie(frequency.values(), colors=frequency)
+  piechart, two, three = plt.pie(frequency.values(), colors=(new_color_dict[j] for j in frequency), autopct='%1.2f%%')
   ax.legend(piechart, frequency, loc="best")
   plt.title("Your Image by Colors")
   plt.show()
-  fig.savefig("figure.png")
+  if not os.path.exists("./usrfiles"):
+    os.mkdir("usrfiles")
+  fig.savefig("./usrfiles/figure.png") 
+  print("Saved your chart to ./usrfiles/figure.png !")
 
 if __name__ == "__main__":
-  #TODO: Add optional flag for chart
   parser = argparse.ArgumentParser()
 
   parser.add_argument("input",
                       help="The input file (image) to see the colors by percentage of"
+                     )
+
+  parser.add_argument("-c", "--chart", action='store_true',
+                      help="Enable this option if you would also like a pie chart to be made"
                      )
 
   args = parser.parse_args()
@@ -84,5 +100,7 @@ if __name__ == "__main__":
     sys.exit(ret_val)
 
   new_freq = get_frequency(args.input)
-  show_chart(new_freq)
+  
+  if args.chart:
+    show_chart(new_freq)
 
