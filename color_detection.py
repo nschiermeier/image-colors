@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 
 
 def train_model():
-  colors_data = pd.read_csv('data/RGB_labeled_colors.csv')
+  colors_data = pd.read_csv('data/full 800 color list.csv')
 
   X = colors_data.drop(columns = ['Name', 'Broad Color']) # input
   y = colors_data['Broad Color']                          # output
